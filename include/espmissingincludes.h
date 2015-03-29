@@ -1,7 +1,7 @@
 #ifndef ESPMISSINGINCLUDES_H
 #define ESPMISSINGINCLUDES_H
 
-#include <stdint.h>
+//#include <stdint.h>
 #include <c_types.h>
 #include <ets_sys.h>
 

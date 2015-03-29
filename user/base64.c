@@ -2,7 +2,7 @@
 /* PUBLIC DOMAIN - Jon Mayo - November 13, 2003 */
 #include "c_types.h"
 #include <stdio.h>
-#include <stdint.h>
+//#include <stdint.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include "base64.h"

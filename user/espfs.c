@@ -29,7 +29,7 @@ It's written for use with httpd, but doesn't need to be used as such.
 #else
 //Test build
 #include <stdio.h>
-#include <stdint.h>
+//#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #define os_malloc malloc

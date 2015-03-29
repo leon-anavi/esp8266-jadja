@@ -13,13 +13,14 @@ FW_BASE		= firmware
 
 # Base directory for the compiler. Needs a / at the end; if not set it'll use the tools that are in
 # the PATH.
-XTENSA_TOOLS_ROOT ?= 
+XTENSA_TOOLS_ROOT ?=
 
 # base directory of the ESP8266 SDK package, absolute
 SDK_BASE	?= /opt/Espressif/ESP8266_SDK
 
 #Esptool.py path and port
 ESPTOOL		?= esptool
+ESPFLASH	?= esptool.py
 ESPPORT		?= /dev/ttyUSB0
 #ESPDELAY indicates seconds to wait between flashing the two binary images
 ESPDELAY	?= 3
@@ -138,10 +139,8 @@ firmware:
 	$(Q) mkdir -p $@
 
 flash: $(FW_FILE_1) $(FW_FILE_2)
-	$(Q) $(ESPTOOL) -cp $(ESPPORT) -cb $(ESPBAUD) -ca 0x00000 -cf firmware/0x00000.bin -v
-	$(Q) [ $(ESPDELAY) -ne 0 ] && echo "Please put the ESP in bootloader mode..." || true
-	$(Q) sleep $(ESPDELAY) || true
-	$(Q) $(ESPTOOL) -cp $(ESPPORT) -cb $(ESPBAUD) -ca 0x40000 -cf firmware/0x40000.bin -v
+	$(Q) $(ESPFLASH) --port $(ESPPORT) write_flash 0x00000 $(FW_FILE_1) 0x40000 $(FW_FILE_2)
+
 
 webpages.espfs: html/ html/wifi/ mkespfsimage/mkespfsimage
 	cd html; find . | ../mkespfsimage/mkespfsimage > ../webpages.espfs; cd ..
@@ -151,7 +150,7 @@ mkespfsimage/mkespfsimage: mkespfsimage/
 
 htmlflash: webpages.espfs
 	if [ $$(stat -c '%s' webpages.espfs) -gt $$(( 0x2E000 )) ]; then echo "webpages.espfs too big!"; false; fi
-	$(ESPTOOL) -cp $(ESPPORT) -cb $(ESPBAUD) -ca 0x12000 -cf webpages.espfs -v
+	$(Q) $(ESPFLASH) --port $(ESPPORT) write_flash 0x12000 webpages.espfs
 
 clean:
 	$(Q) rm -f $(APP_AR)
