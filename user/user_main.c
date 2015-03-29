@@ -281,6 +281,16 @@ void user_init(void) {
 	stdoutInit();
 	os_printf("\nSSID: %s\n", sysCfg.sta_ssid);
 	if (0 == strlen(sysCfg.sta_ssid)) {
+		wifi_set_opmode(0x3); //reset to AP+STA mode
+
+		//Check WiFi mode (required on the first launch of the device)
+		if (3 != wifi_get_opmode()){
+			//Reset to AP+STA mode and restart
+			wifi_set_opmode(0x3);
+			os_printf("Reset to AP+STA mode. Restarting system...\n");
+			system_restart();
+		}
+
 		httpdInit(builtInUrls, 80);
 		os_printf("\nHTTP server daemon started...\n");
 	}

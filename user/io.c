@@ -42,7 +42,7 @@ static void ICACHE_FLASH_ATTR resetBtnTimerCb(void *arg) {
 
 			wifi_station_disconnect();
 			wifi_set_opmode(0x3); //reset to AP+STA mode
-			os_printf("Reset to AP mode. Restarting system...\n");
+			os_printf("Reset to AP+STA mode. Restarting system...\n");
 			system_restart();
 		}
 		resetCnt=0;
