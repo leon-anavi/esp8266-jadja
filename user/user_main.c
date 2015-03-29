@@ -21,6 +21,7 @@
 #include "cgiflash.h"
 #include "stdout.h"
 #include "auth.h"
+#include "config.h"
 
 //Function that tells the authentication system what users/passwords live on the system.
 //This is disabled in the default build; if you want to try it, enable the authBasic line in
@@ -77,8 +78,17 @@ HttpdBuiltInUrl builtInUrls[]={
 
 //Main routine. Initialize stdout, the I/O and the webserver and we're done.
 void user_init(void) {
-	stdoutInit();
+
+	CFG_Load();
+
 	ioInit();
-	httpdInit(builtInUrls, 80);
-	os_printf("\nReady\n");
+	stdoutInit();
+	os_printf("\nSSID: %s\n", sysCfg.sta_ssid);
+	if (0 == strlen(sysCfg.sta_ssid)) {
+		httpdInit(builtInUrls, 80);
+		os_printf("\nHTTP server daemon started...\n");
+	}
+	else {
+		os_printf("\nTODO: MQTT\n");
+	}
 }

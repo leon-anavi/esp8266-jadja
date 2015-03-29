@@ -31,16 +31,16 @@ TARGET		= httpd
 
 # which modules (subdirectories) of the project to include in compiling
 #MODULES		= driver user lwip/api lwip/app lwip/core lwip/core/ipv4 lwip/netif
-MODULES		= driver user
-EXTRA_INCDIR	= include \
+MODULES		= driver mqtt user modules jsmn
+EXTRA_INCDIR	= include modules/include \
 		. \
 		lib/heatshrink/
 
 # libraries used in this project, mainly provided by the SDK
-LIBS		= c gcc hal phy pp net80211 wpa main lwip
+LIBS		= c gcc hal phy pp net80211 lwip wpa main lwip ssl
 
 # compiler flags using during compilation of source files
-CFLAGS		= -Os -ggdb -std=c99 -Werror -Wpointer-arith -Wundef -Wall -Wl,-EL -fno-inline-functions \
+CFLAGS		= -Os -ggdb -std=c99 -Wpointer-arith -Wundef -Wall -Wl,-EL -fno-inline-functions \
 		-nostdlib -mlongcalls -mtext-section-literals  -D__ets__ -DICACHE_FLASH \
 		-Wno-address
 

@@ -5,9 +5,9 @@ Cgi/template routines for the /wifi url.
 /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
- * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain 
- * this notice you can do whatever you want with this stuff. If we meet some day, 
- * and you think this stuff is worth it, you can buy me a beer in return. 
+ * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain
+ * this notice you can do whatever you want with this stuff. If we meet some day,
+ * and you think this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
 
@@ -20,6 +20,7 @@ Cgi/template routines for the /wifi url.
 #include "cgi.h"
 #include "io.h"
 #include "espmissingincludes.h"
+#include "config.h"
 
 //Enable this to disallow any changes in AP settings
 //#define DEMO_MODE
@@ -123,8 +124,8 @@ int ICACHE_FLASH_ATTR cgiWiFiScan(HttpdConnData *connData) {
 		if (cgiWifiAps.apData==NULL) cgiWifiAps.noAps=0;
 		for (i=0; i<cgiWifiAps.noAps; i++) {
 			//Fill in json code for an access point
-			len=os_sprintf(buff, "{\"essid\": \"%s\", \"rssi\": \"%d\", \"enc\": \"%d\"}%s\n", 
-					cgiWifiAps.apData[i]->ssid, cgiWifiAps.apData[i]->rssi, 
+			len=os_sprintf(buff, "{\"essid\": \"%s\", \"rssi\": \"%d\", \"enc\": \"%d\"}%s\n",
+					cgiWifiAps.apData[i]->ssid, cgiWifiAps.apData[i]->rssi,
 					cgiWifiAps.apData[i]->enc, (i==cgiWifiAps.noAps-1)?"":",");
 			httpdSend(connData, buff, len);
 		}
@@ -181,18 +182,24 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 	char essid[128];
 	char passwd[128];
 	static ETSTimer reassTimer;
-	
+
 	if (connData->conn==NULL) {
 		//Connection aborted. Clean up.
 		return HTTPD_CGI_DONE;
 	}
-	
+
 	httpdFindArg(connData->post->buff, "essid", essid, sizeof(essid));
 	httpdFindArg(connData->post->buff, "passwd", passwd, sizeof(passwd));
 
 	os_strncpy((char*)stconf.ssid, essid, 32);
 	os_strncpy((char*)stconf.password, passwd, 64);
 	os_printf("Try to connect to AP %s pw %s\n", essid, passwd);
+
+	//Save configuration to the memory
+	saveFlag.flag  = 1;
+	os_sprintf(sysCfg.sta_ssid, "%s", essid);
+	os_sprintf(sysCfg.sta_pwd, "%s", passwd);
+	CFG_Save();
 
 	//Schedule disconnect/connect
 	os_timer_disarm(&reassTimer);
@@ -212,7 +219,7 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 int ICACHE_FLASH_ATTR cgiWifiSetMode(HttpdConnData *connData) {
 	int len;
 	char buff[1024];
-	
+
 	if (connData->conn==NULL) {
 		//Connection aborted. Clean up.
 		return HTTPD_CGI_DONE;
@@ -259,5 +266,3 @@ int ICACHE_FLASH_ATTR tplWlan(HttpdConnData *connData, char *token, void **arg) 
 	httpdSend(connData, buff, -1);
 	return HTTPD_CGI_DONE;
 }
-
-
