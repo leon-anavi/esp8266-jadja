@@ -196,10 +196,7 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 	os_printf("Try to connect to AP %s pw %s\n", essid, passwd);
 
 	//Save configuration to the memory
-	saveFlag.flag  = 1;
-	os_sprintf(sysCfg.sta_ssid, "%s", essid);
-	os_sprintf(sysCfg.sta_pwd, "%s", passwd);
-	CFG_Save();
+	CFG_Update(essid, passwd);
 
 	//Schedule disconnect/connect
 	os_timer_disarm(&reassTimer);

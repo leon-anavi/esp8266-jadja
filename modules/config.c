@@ -107,3 +107,12 @@ CFG_Load()
 	}
 
 }
+
+void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128])
+{
+	//Save configuration to the memory
+	saveFlag.flag  = 1;
+	os_sprintf(sysCfg.sta_ssid, "%s", essid);
+	os_sprintf(sysCfg.sta_pwd, "%s", passwd);
+	CFG_Save();
+}

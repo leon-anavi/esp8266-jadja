@@ -2,9 +2,9 @@
 /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
- * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain 
- * this notice you can do whatever you want with this stuff. If we meet some day, 
- * and you think this stuff is worth it, you can buy me a beer in return. 
+ * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain
+ * this notice you can do whatever you want with this stuff. If we meet some day,
+ * and you think this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
 
@@ -37,6 +37,9 @@ static void ICACHE_FLASH_ATTR resetBtnTimerCb(void *arg) {
 		resetCnt++;
 	} else {
 		if (resetCnt>=6) { //3 sec pressed
+			//reset WiFi configurations
+			CFG_Update("", "");
+
 			wifi_station_disconnect();
 			wifi_set_opmode(0x3); //reset to AP+STA mode
 			os_printf("Reset to AP mode. Restarting system...\n");
@@ -54,4 +57,3 @@ void ioInit() {
 	os_timer_setfn(&resetBtntimer, resetBtnTimerCb, NULL);
 	os_timer_arm(&resetBtntimer, 500, 1);
 }
-

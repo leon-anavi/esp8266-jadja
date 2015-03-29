@@ -55,6 +55,7 @@ typedef struct {
 
 void ICACHE_FLASH_ATTR CFG_Save();
 void ICACHE_FLASH_ATTR CFG_Load();
+void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128]);
 
 extern SYSCFG sysCfg;
 extern SAVE_FLAG saveFlag;

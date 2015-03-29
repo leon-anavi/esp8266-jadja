@@ -7,8 +7,8 @@
 
 /*DEFAULT CONFIGURATIONS*/
 
-#define MQTT_HOST			"192.168.11.122" //or "mqtt.yourdomain.com"
-#define MQTT_PORT			1880
+#define MQTT_HOST			"iot.anavi.org" // ip or domain
+#define MQTT_PORT			1883
 #define MQTT_BUF_SIZE		1024
 #define MQTT_KEEPALIVE		120	 /*second*/
 
