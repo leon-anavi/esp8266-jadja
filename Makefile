@@ -142,7 +142,7 @@ flash: $(FW_FILE_1) $(FW_FILE_2)
 	$(Q) $(ESPFLASH) --port $(ESPPORT) write_flash 0x00000 $(FW_FILE_1) 0x40000 $(FW_FILE_2)
 
 
-webpages.espfs: html/ html/wifi/ mkespfsimage/mkespfsimage
+webpages.espfs: html/wifi/ mkespfsimage/mkespfsimage
 	cd html; find . | ../mkespfsimage/mkespfsimage > ../webpages.espfs; cd ..
 
 mkespfsimage/mkespfsimage: mkespfsimage/
