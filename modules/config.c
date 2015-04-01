@@ -1,5 +1,5 @@
 /*
-/* config.c
+* config.c
 *
 * Copyright (c) 2014-2015, Tuan PM <tuanpm at live dot com>
 * All rights reserved.
@@ -28,6 +28,7 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 */
+#include "espmissingincludes.h"
 #include "ets_sys.h"
 #include "os_type.h"
 #include "mem.h"

@@ -82,13 +82,11 @@ void mqttConnectedCb(uint32_t *args)
 
 void mqttDisconnectedCb(uint32_t *args)
 {
-	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Disconnected\r\n");
 }
 
 void mqttPublishedCb(uint32_t *args)
 {
-	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Published\r\n");
 }
 
@@ -192,7 +190,7 @@ bool parse(char *json) {
 
 	// Loop over all keys of the root object
 	int index = 1;
-	for (index; index < tokensCount; index++) {
+	for (index = 1; index < tokensCount; index++) {
 		if (jsoneq(json, &tokens[index], "temperature") == 0) {
 
 			unsigned int length = tokens[index+1].end - tokens[index+1].start;
@@ -213,6 +211,7 @@ bool parse(char *json) {
 			index++;
 		}
 	}
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
