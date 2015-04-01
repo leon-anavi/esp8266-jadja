@@ -29,6 +29,7 @@
 * POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "espmissingincludes.h"
 #include "user_interface.h"
 #include "osapi.h"
 #include "espconn.h"
@@ -147,7 +148,7 @@ READPACKET:
 						espconn_disconnect(client->pCon);
 					}
 				} else {
-					INFO("MQTT: Connected to %s:%d\r\n", client->host, client->port);
+					INFO("MQTT: Connected to %s:%d\r\n", client->host, (int) client->port);
 					client->connState = MQTT_DATA;
 					if(client->connectedCb)
 						client->connectedCb((uint32_t*)client);
@@ -238,6 +239,9 @@ READPACKET:
 
 			}
 			break;
+			default:
+				//Avoid warnings and do nothing
+			break;
 		}
 	} else {
 		INFO("ERROR: Message too long\r\n");
@@ -277,7 +281,7 @@ void ICACHE_FLASH_ATTR mqtt_timer(void *arg)
 		client->keepAliveTick ++;
 		if(client->keepAliveTick > client->mqtt_state.connect_info->keepalive){
 
-			INFO("\r\nMQTT: Send keepalive packet to %s:%d!\r\n", client->host, client->port);
+			INFO("\r\nMQTT: Send keepalive packet to %s:%d!\r\n", client->host, (int) client->port);
 			client->mqtt_state.outbound_message = mqtt_msg_pingreq(&client->mqtt_state.mqtt_connection);
 			client->mqtt_state.pending_msg_type = MQTT_MSG_TYPE_PINGREQ;
 			client->mqtt_state.pending_msg_type = mqtt_get_type(client->mqtt_state.outbound_message->data);
@@ -341,7 +345,7 @@ mqtt_tcpclient_connect_cb(void *arg)
 	espconn_regist_disconcb(client->pCon, mqtt_tcpclient_discon_cb);
 	espconn_regist_recvcb(client->pCon, mqtt_tcpclient_recv);////////
 	espconn_regist_sentcb(client->pCon, mqtt_tcpclient_sent_cb);///////
-	INFO("MQTT: Connected to broker %s:%d\r\n", client->host, client->port);
+	INFO("MQTT: Connected to broker %s:%d\r\n", client->host, (int) client->port);
 
 	mqtt_msg_init(&client->mqtt_state.mqtt_connection, client->mqtt_state.out_buffer, client->mqtt_state.out_buffer_length);
 	client->mqtt_state.outbound_message = mqtt_msg_connect(&client->mqtt_state.mqtt_connection, client->mqtt_state.connect_info);
@@ -374,7 +378,7 @@ mqtt_tcpclient_recon_cb(void *arg, sint8 errType)
 	struct espconn *pCon = (struct espconn *)arg;
 	MQTT_Client* client = (MQTT_Client *)pCon->reverse;
 
-	INFO("TCP: test reconnect to %s:%d\r\n", client->host, client->port);
+	INFO("TCP: test reconnect to %s:%d\r\n", client->host, (int) client->port);
 
 	client->connState = TCP_RECONNECT_REQ;
 
@@ -457,7 +461,7 @@ MQTT_Task(os_event_t *e)
 		break;
 	case TCP_RECONNECT:
 		MQTT_Connect(client);
-		INFO("TCP: Reconnect to: %s:%d\r\n", client->host, client->port);
+		INFO("TCP: Reconnect to: %s:%d\r\n", client->host, (int) client->port);
 		client->connState = TCP_CONNECTING;
 		break;
 	case MQTT_DATA:
@@ -481,6 +485,9 @@ MQTT_Task(os_event_t *e)
 			client->mqtt_state.outbound_message = NULL;
 			break;
 		}
+		break;
+		default:
+			//Do nothing and avoid warnings :)
 		break;
 	}
 }
@@ -603,7 +610,7 @@ MQTT_Connect(MQTT_Client *mqttClient)
 	os_timer_arm(&mqttClient->mqttTimer, 1000, 1);
 
 	if(UTILS_StrToIP(mqttClient->host, &mqttClient->pCon->proto.tcp->remote_ip)) {
-		INFO("TCP: Connect to ip  %s:%d\r\n", mqttClient->host, mqttClient->port);
+		INFO("TCP: Connect to ip  %s:%d\r\n", mqttClient->host, (int) mqttClient->port);
 		if(mqttClient->security){
 			espconn_secure_connect(mqttClient->pCon);
 		}
@@ -612,7 +619,7 @@ MQTT_Connect(MQTT_Client *mqttClient)
 		}
 	}
 	else {
-		INFO("TCP: Connect to domain %s:%d\r\n", mqttClient->host, mqttClient->port);
+		INFO("TCP: Connect to domain %s:%d\r\n", mqttClient->host, (int) mqttClient->port);
 		espconn_gethostbyname(mqttClient->pCon, mqttClient->host, &mqttClient->ip, mqtt_dns_found);
 	}
 	mqttClient->connState = TCP_CONNECTING;

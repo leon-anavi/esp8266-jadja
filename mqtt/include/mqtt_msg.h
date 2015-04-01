@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   mqtt_msg.h
  * Author: Minh Tuan
  *
@@ -43,7 +43,7 @@ extern "C" {
 *
 */
 /* 7			6			5			4			3			2			1			0*/
-/*|      --- Message Type----			|  DUP Flag	|	   QoS Level		|	Retain	|
+/*|      --- Message Type----			|  DUP Flag	|	   QoS Level		|	Retain	| */
 /*										Remaining Length								 */
 
 
@@ -126,4 +126,3 @@ mqtt_message_t* ICACHE_FLASH_ATTR mqtt_msg_disconnect(mqtt_connection_t* connect
 #endif
 
 #endif	/* MQTT_MSG_H */
-

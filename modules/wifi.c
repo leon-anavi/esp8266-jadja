@@ -4,6 +4,8 @@
  *  Created on: Dec 30, 2014
  *      Author: Minh
  */
+
+#include "espmissingincludes.h"
 #include "wifi.h"
 #include "user_interface.h"
 #include "osapi.h"
@@ -96,4 +98,3 @@ void ICACHE_FLASH_ATTR WIFI_Connect(uint8_t* ssid, uint8_t* pass, WifiCallback c
 	wifi_station_set_auto_connect(TRUE);
 	wifi_station_connect();
 }
-

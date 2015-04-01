@@ -9,10 +9,10 @@
  * Modification history:
  *     2014/3/12, v1.0 create this file.
 *******************************************************************************/
+#include "espmissingincludes.h"
 #include "ets_sys.h"
 #include "osapi.h"
 #include "driver/uart.h"
-#include "osapi.h"
 #include "driver/uart_register.h"
 //#include "ssc.h"
 
@@ -199,7 +199,6 @@ uart0_rx_intr_handler(void *para)
     * uart1 and uart0 respectively
     */
 //  RcvMsgBuff *pRxBuff = (RcvMsgBuff *)para;
-  uint8 RcvChar;
   uint8 uart_no = UART0;//UartDev.buff_uart_no;
 
 //  if (UART_RXFIFO_FULL_INT_ST != (READ_PERI_REG(UART_INT_ST(uart_no)) & UART_RXFIFO_FULL_INT_ST))
