@@ -82,12 +82,12 @@ Note: %WiFiapwarn%
 </p>
 <form name="wifiform" action="connect.cgi" method="post">
 <p>
-To connect to a WiFi network, please select one of the detected networks...<br>
+Please select your WiFi network:<br>
 <div id="aps">Scanning...</div>
 <br>
 WiFi password, if applicable: <br />
 <input type="text" name="passwd" val="%WiFiPasswd%"> <br />
-<input type="submit" name="connect" value="Connect!">
+<input type="submit" name="connect" value="Connect">
 </p>
 </div>
 </body>
