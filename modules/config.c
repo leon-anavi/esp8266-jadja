@@ -88,15 +88,15 @@ CFG_Load()
 
 		sysCfg.cfg_holder = CFG_HOLDER;
 
-		os_sprintf(sysCfg.sta_ssid, "%s", STA_SSID);
-		os_sprintf(sysCfg.sta_pwd, "%s", STA_PASS);
+		os_sprintf((char *)sysCfg.sta_ssid, "%s", STA_SSID);
+		os_sprintf((char *)sysCfg.sta_pwd, "%s", STA_PASS);
 		sysCfg.sta_type = STA_TYPE;
 
-		os_sprintf(sysCfg.device_id, MQTT_CLIENT_ID, system_get_chip_id());
-		os_sprintf(sysCfg.mqtt_host, "%s", MQTT_HOST);
+		os_sprintf((char *)sysCfg.device_id, MQTT_CLIENT_ID, system_get_chip_id());
+		os_sprintf((char *)sysCfg.mqtt_host, "%s", MQTT_HOST);
 		sysCfg.mqtt_port = MQTT_PORT;
-		os_sprintf(sysCfg.mqtt_user, "%s", MQTT_USER);
-		os_sprintf(sysCfg.mqtt_pass, "%s", MQTT_PASS);
+		os_sprintf((char *)sysCfg.mqtt_user, "%s", MQTT_USER);
+		os_sprintf((char *)sysCfg.mqtt_pass, "%s", MQTT_PASS);
 
 		sysCfg.security = DEFAULT_SECURITY;	/* default non ssl */
 
@@ -113,7 +113,7 @@ void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128])
 {
 	//Save configuration to the memory
 	saveFlag.flag  = 1;
-	os_sprintf(sysCfg.sta_ssid, "%s", essid);
-	os_sprintf(sysCfg.sta_pwd, "%s", passwd);
+	os_sprintf((char *)sysCfg.sta_ssid, "%s", essid);
+	os_sprintf((char *)sysCfg.sta_pwd, "%s", passwd);
 	CFG_Save();
 }
