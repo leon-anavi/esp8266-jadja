@@ -40,6 +40,7 @@
 #include "user_config.h"
 #include "mqtt.h"
 #include "queue.h"
+#include "utils.h"
 
 #define MQTT_TASK_PRIO        		0
 #define MQTT_TASK_QUEUE_SIZE    	1
@@ -409,7 +410,7 @@ MQTT_Publish(MQTT_Client *client, const char* topic, const char* data, int data_
 		INFO("MQTT: Queuing publish failed\r\n");
 		return FALSE;
 	}
-	INFO("MQTT: queuing publish, length: %d, queue size(%d/%d)\r\n", client->mqtt_state.outbound_message->length, client->msgQueue.rb.fill_cnt, client->msgQueue.rb.size);
+	INFO("MQTT: queuing publish, length: %d, queue size(%d/%d)\r\n", client->mqtt_state.outbound_message->length, (int) client->msgQueue.rb.fill_cnt, (int) client->msgQueue.rb.size);
 	while(QUEUE_Puts(&client->msgQueue, client->mqtt_state.outbound_message->data, client->mqtt_state.outbound_message->length) == -1){
 		INFO("MQTT: Queue full\r\n");
 		if(QUEUE_Gets(&client->msgQueue, dataBuffer, &dataLen, MQTT_BUF_SIZE) == -1) {
@@ -506,9 +507,9 @@ MQTT_InitConnection(MQTT_Client *mqttClient, uint8_t* host, uint32 port, uint8_t
 	uint32_t temp;
 	INFO("MQTT_InitConnection\r\n");
 	os_memset(mqttClient, 0, sizeof(MQTT_Client));
-	temp = os_strlen(host);
+	temp = os_strlen((const char *)host);
 	mqttClient->host = (uint8_t*)os_zalloc(temp + 1);
-	os_strcpy(mqttClient->host, host);
+	os_strcpy((char *)mqttClient->host, (const char *)host);
 	mqttClient->host[temp] = 0;
 	mqttClient->port = port;
 	mqttClient->security = security;
@@ -532,19 +533,19 @@ MQTT_InitClient(MQTT_Client *mqttClient, uint8_t* client_id, uint8_t* client_use
 
 	os_memset(&mqttClient->connect_info, 0, sizeof(mqtt_connect_info_t));
 
-	temp = os_strlen(client_id);
+	temp = os_strlen((const char *)client_id);
 	mqttClient->connect_info.client_id = (uint8_t*)os_zalloc(temp + 1);
-	os_strcpy(mqttClient->connect_info.client_id, client_id);
+	os_strcpy(mqttClient->connect_info.client_id, (const char *)client_id);
 	mqttClient->connect_info.client_id[temp] = 0;
 
-	temp = os_strlen(client_user);
+	temp = os_strlen((const char *)client_user);
 	mqttClient->connect_info.username = (uint8_t*)os_zalloc(temp + 1);
-	os_strcpy(mqttClient->connect_info.username, client_user);
+	os_strcpy(mqttClient->connect_info.username, (const char *)client_user);
 	mqttClient->connect_info.username[temp] = 0;
 
-	temp = os_strlen(client_pass);
+	temp = os_strlen((const char *)client_pass);
 	mqttClient->connect_info.password = (uint8_t*)os_zalloc(temp + 1);
-	os_strcpy(mqttClient->connect_info.password, client_pass);
+	os_strcpy(mqttClient->connect_info.password, (const char *)client_pass);
 	mqttClient->connect_info.password[temp] = 0;
 
 
@@ -568,14 +569,14 @@ void ICACHE_FLASH_ATTR
 MQTT_InitLWT(MQTT_Client *mqttClient, uint8_t* will_topic, uint8_t* will_msg, uint8_t will_qos, uint8_t will_retain)
 {
 	uint32_t temp;
-	temp = os_strlen(will_topic);
+	temp = os_strlen((const char *)will_topic);
 	mqttClient->connect_info.will_topic = (uint8_t*)os_zalloc(temp + 1);
-	os_strcpy(mqttClient->connect_info.will_topic, will_topic);
+	os_strcpy(mqttClient->connect_info.will_topic, (const char *)will_topic);
 	mqttClient->connect_info.will_topic[temp] = 0;
 
-	temp = os_strlen(will_msg);
+	temp = os_strlen((const char *)will_msg);
 	mqttClient->connect_info.will_message = (uint8_t*)os_zalloc(temp + 1);
-	os_strcpy(mqttClient->connect_info.will_message, will_msg);
+	os_strcpy(mqttClient->connect_info.will_message, (const char *)will_msg);
 	mqttClient->connect_info.will_message[temp] = 0;
 
 
@@ -609,7 +610,7 @@ MQTT_Connect(MQTT_Client *mqttClient)
 	os_timer_setfn(&mqttClient->mqttTimer, (os_timer_func_t *)mqtt_timer, mqttClient);
 	os_timer_arm(&mqttClient->mqttTimer, 1000, 1);
 
-	if(UTILS_StrToIP(mqttClient->host, &mqttClient->pCon->proto.tcp->remote_ip)) {
+	if(UTILS_StrToIP((const int8_t *)mqttClient->host, &mqttClient->pCon->proto.tcp->remote_ip)) {
 		INFO("TCP: Connect to ip  %s:%d\r\n", mqttClient->host, (int) mqttClient->port);
 		if(mqttClient->security){
 			espconn_secure_connect(mqttClient->pCon);
@@ -620,7 +621,7 @@ MQTT_Connect(MQTT_Client *mqttClient)
 	}
 	else {
 		INFO("TCP: Connect to domain %s:%d\r\n", mqttClient->host, (int) mqttClient->port);
-		espconn_gethostbyname(mqttClient->pCon, mqttClient->host, &mqttClient->ip, mqtt_dns_found);
+		espconn_gethostbyname(mqttClient->pCon, (const char *)mqttClient->host, &mqttClient->ip, mqtt_dns_found);
 	}
 	mqttClient->connState = TCP_CONNECTING;
 }
