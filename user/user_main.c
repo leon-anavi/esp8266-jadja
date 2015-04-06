@@ -44,11 +44,8 @@ int g_thresholdTemperature = 30;
 bool g_settingsUpdated = false;
 
 os_event_t    user_procTaskQueue[user_procTaskQueueLen];
-static void user_procTask(os_event_t *events);
 
 static volatile os_timer_t some_timer;
-
-static int gpioPin;
 
 char* itoa(int value, char* result, int base);
 int atoi(const char *s);
@@ -279,7 +276,7 @@ void user_init(void) {
 	ioInit();
 	stdoutInit();
 	os_printf("\nSSID: %s\n", sysCfg.sta_ssid);
-	if (0 == strlen(sysCfg.sta_ssid)) {
+	if (0 == strlen((const char *)sysCfg.sta_ssid)) {
 		wifi_set_opmode(0x3); //reset to AP+STA mode
 
 		//Check WiFi mode (required on the first launch of the device)
@@ -303,7 +300,7 @@ void user_init(void) {
 
 		MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
 
-		MQTT_InitLWT(&mqttClient, "/lwt", "offline", 0, 0);
+		MQTT_InitLWT(&mqttClient, (uint8_t *)"/lwt", (uint8_t *)"offline", 0, 0);
 		MQTT_OnConnected(&mqttClient, mqttConnectedCb);
 		MQTT_OnDisconnected(&mqttClient, mqttDisconnectedCb);
 		MQTT_OnPublished(&mqttClient, mqttPublishedCb);

@@ -36,6 +36,7 @@
 #include <math.h>
 #include <stddef.h>
 #include "utils.h"
+#include "espmissingincludes.h"
 
 
 uint8_t ICACHE_FLASH_ATTR UTILS_IsIPV4 (int8_t *str)
@@ -94,7 +95,7 @@ uint8_t ICACHE_FLASH_ATTR UTILS_StrToIP(const int8_t* str, void *ip)
 	    /* The count of the number of bytes processed. */
 	    int i;
 	    /* A pointer to the next digit to process. */
-	    const char * start;
+			const int8_t* start;
 
 	    start = str;
 	    for (i = 0; i < 4; i++) {
@@ -131,7 +132,7 @@ uint32_t ICACHE_FLASH_ATTR UTILS_Atoh(const int8_t *s)
 {
 	uint32_t value = 0, digit;
 	int8_t c;
-	
+
 	while((c = *s++)){
 		if('0' <= c && c <= '9')
 			digit = c - '0';
@@ -140,10 +141,9 @@ uint32_t ICACHE_FLASH_ATTR UTILS_Atoh(const int8_t *s)
 		else if('a' <= c && c<= 'f')
 			digit = c - 'a' + 10;
 		else break;
-		
+
 		value = (value << 4) | digit;
 	}
-	
+
 	return value;
 }
-

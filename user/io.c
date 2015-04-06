@@ -16,6 +16,7 @@
 #include "osapi.h"
 #include "gpio.h"
 #include "espmissingincludes.h"
+#include "config.h"
 
 #define LEDGPIO 2
 #define BTNGPIO 0
