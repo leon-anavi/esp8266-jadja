@@ -1,4 +1,7 @@
-<html><head><title>WiFi connection</title>
+<!DOCTYPE html>
+<html>
+<head>
+<title>WiFi connection</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 <script type="text/javascript" src="140medley.min.js"></script>
 <script type="text/javascript">
@@ -86,7 +89,7 @@ Please select your WiFi network:<br>
 <div id="aps">Scanning...</div>
 <br>
 WiFi password, if applicable: <br />
-<input type="text" name="passwd" val="%WiFiPasswd%"> <br />
+<input type="password" name="passwd" val="%WiFiPasswd%"> <br />
 <input type="submit" name="connect" value="Connect">
 </p>
 </div>
