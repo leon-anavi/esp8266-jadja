@@ -22,7 +22,10 @@ function createDivider() {
 
 function clearSelectedItem() {
   for(var nIter=0;nIter<networks.length;nIter++) {
-    document.getElementById("link"+networks[nIter]).style.backgroundColor="#f6f6f6";
+    var linkElement = document.getElementById("link"+networks[nIter]);
+    if (null !== linkElement) {
+      linkElement.style.backgroundColor="#f6f6f6";
+    }
   }
 }
 

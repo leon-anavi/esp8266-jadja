@@ -66,7 +66,7 @@ void wifiConnectCb(uint8_t status)
 void mqttConnectedCb(uint32_t *args)
 {
 	connected_mqtt_cloud = true;
-	
+
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Connected\r\n");
 	if (FALSE == MQTT_Subscribe(client, "/settings/temperature", 0))
@@ -244,24 +244,18 @@ general ones. Authorization things (like authBasic) act as a 'barrier' and
 should be placed above the URLs they protect.
 */
 HttpdBuiltInUrl builtInUrls[]={
-	{"/", cgiRedirect, "/wifi/wifi.tpl"},
-	{"/flash.bin", cgiReadFlash, NULL},
-	{"/led.tpl", cgiEspFsTemplate, tplLed},
-	{"/index.tpl", cgiEspFsTemplate, tplCounter},
-	{"/led.cgi", cgiLed, NULL},
-	{"/updateweb.cgi", cgiUploadEspfs, NULL},
-
+	{"/", cgiRedirect, "/wifi.tpl"},
 	//Routines to make the /wifi URL and everything beneath it work.
 
 //Enable the line below to protect the WiFi configuration with an username/password combo.
-//	{"/wifi/*", authBasic, myPassFn},
+//	{"/*", authBasic, myPassFn},
 
-	{"/wifi", cgiRedirect, "/wifi/wifi.tpl"},
-	{"/wifi/", cgiRedirect, "/wifi/wifi.tpl"},
-	{"/wifi/wifiscan.cgi", cgiWiFiScan, NULL},
-	{"/wifi/wifi.tpl", cgiEspFsTemplate, tplWlan},
-	{"/wifi/connect.cgi", cgiWiFiConnect, NULL},
-	{"/wifi/setmode.cgi", cgiWifiSetMode, NULL},
+	{"/wifi", cgiRedirect, "/wifi.tpl"},
+	{"/wifi/", cgiRedirect, "/wifi.tpl"},
+	{"/wifiscan.cgi", cgiWiFiScan, NULL},
+	{"/wifi.tpl", cgiEspFsTemplate, tplWlan},
+	{"/connect.cgi", cgiWiFiConnect, NULL},
+	{"/setmode.cgi", cgiWifiSetMode, NULL},
 
 	{"*", cgiEspFsHook, NULL}, //Catch-all cgi function for the filesystem
 	{NULL, NULL, NULL}
