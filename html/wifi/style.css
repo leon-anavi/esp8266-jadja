@@ -1,15 +1,15 @@
 
 body {
-	background-color: #404040;
+	background-color: #FFFFFF;
 	font-family: sans-serif;
 }
 
 #main {
-	background-color: #d0d0FF;
+	background-color: #FFFFFF;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	border: 2px solid #000000;
+	border: 2px solid #2222B2;
 	width: 800px;
 	margin: 0 auto;
 	padding: 20px
