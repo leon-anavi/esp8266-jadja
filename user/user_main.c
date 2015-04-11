@@ -65,6 +65,8 @@ void wifiConnectCb(uint8_t status)
 }
 void mqttConnectedCb(uint32_t *args)
 {
+	connected_mqtt_cloud = true;
+	
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Connected\r\n");
 	if (FALSE == MQTT_Subscribe(client, "/settings/temperature", 0))
@@ -265,9 +267,10 @@ HttpdBuiltInUrl builtInUrls[]={
 	{NULL, NULL, NULL}
 };
 
-
 //Main routine. Initialize stdout, the I/O and the webserver and we're done.
 void user_init(void) {
+	connected_mqtt_cloud = false;
+
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	os_delay_us(1000000);
 
@@ -292,8 +295,6 @@ void user_init(void) {
 	}
 	else {
 		os_printf("\r\nMQTT ...\r\n");
-
-		gpio_output_set(BIT4, 0, BIT4, 0);
 
 		MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);
 		os_printf("\r\nInit ...\r\n");
