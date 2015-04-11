@@ -148,11 +148,15 @@ webpages.espfs: html/wifi/ mkespfsimage/mkespfsimage
 mkespfsimage/mkespfsimage: mkespfsimage/
 	make -C mkespfsimage
 
-htmlflash: webpages.espfs
+htmlclean:
+	$(Q) rm -f webpages.espfs
+
+htmlflash: htmlclean webpages.espfs
 	if [ $$(stat -c '%s' webpages.espfs) -gt $$(( 0x2E000 )) ]; then echo "webpages.espfs too big!"; false; fi
 	$(Q) $(ESPFLASH) --port $(ESPPORT) write_flash 0x12000 webpages.espfs
 
 clean:
+	$(Q) rm -f webpages.espfs
 	$(Q) rm -f $(APP_AR)
 	$(Q) rm -f $(TARGET_OUT)
 	$(Q) find $(BUILD_BASE) -type f | xargs rm -f
