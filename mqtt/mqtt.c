@@ -534,17 +534,17 @@ MQTT_InitClient(MQTT_Client *mqttClient, uint8_t* client_id, uint8_t* client_use
 	os_memset(&mqttClient->connect_info, 0, sizeof(mqtt_connect_info_t));
 
 	temp = os_strlen((const char *)client_id);
-	mqttClient->connect_info.client_id = (uint8_t*)os_zalloc(temp + 1);
+	mqttClient->connect_info.client_id = (char*)os_zalloc(temp + 1);
 	os_strcpy(mqttClient->connect_info.client_id, (const char *)client_id);
 	mqttClient->connect_info.client_id[temp] = 0;
 
 	temp = os_strlen((const char *)client_user);
-	mqttClient->connect_info.username = (uint8_t*)os_zalloc(temp + 1);
+	mqttClient->connect_info.username = (char*)os_zalloc(temp + 1);
 	os_strcpy(mqttClient->connect_info.username, (const char *)client_user);
 	mqttClient->connect_info.username[temp] = 0;
 
 	temp = os_strlen((const char *)client_pass);
-	mqttClient->connect_info.password = (uint8_t*)os_zalloc(temp + 1);
+	mqttClient->connect_info.password = (char*)os_zalloc(temp + 1);
 	os_strcpy(mqttClient->connect_info.password, (const char *)client_pass);
 	mqttClient->connect_info.password[temp] = 0;
 
@@ -570,12 +570,12 @@ MQTT_InitLWT(MQTT_Client *mqttClient, uint8_t* will_topic, uint8_t* will_msg, ui
 {
 	uint32_t temp;
 	temp = os_strlen((const char *)will_topic);
-	mqttClient->connect_info.will_topic = (uint8_t*)os_zalloc(temp + 1);
+	mqttClient->connect_info.will_topic = (char*)os_zalloc(temp + 1);
 	os_strcpy(mqttClient->connect_info.will_topic, (const char *)will_topic);
 	mqttClient->connect_info.will_topic[temp] = 0;
 
 	temp = os_strlen((const char *)will_msg);
-	mqttClient->connect_info.will_message = (uint8_t*)os_zalloc(temp + 1);
+	mqttClient->connect_info.will_message = (char*)os_zalloc(temp + 1);
 	os_strcpy(mqttClient->connect_info.will_message, (const char *)will_msg);
 	mqttClient->connect_info.will_message[temp] = 0;
 
