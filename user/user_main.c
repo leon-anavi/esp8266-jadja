@@ -292,7 +292,9 @@ void user_init(void) {
 	}
 	else {
 		os_printf("\r\nMQTT ...\r\n");
-		
+
+		gpio_output_set(BIT4, 0, BIT4, 0);
+
 		MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);
 		os_printf("\r\nInit ...\r\n");
 
