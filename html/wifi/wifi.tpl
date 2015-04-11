@@ -11,6 +11,8 @@
 var xhr=j();
 var currAp="%currSsid%";
 
+var networks=[];
+
 function createDivider() {
   var divider=document.createElement("li");
   divider.className="ui-li-divider ui-bar-inherit ui-first-child";
@@ -18,6 +20,11 @@ function createDivider() {
   return divider;
 }
 
+function clearSelectedItem() {
+  for(var nIter=0;nIter<networks.length;nIter++) {
+    document.getElementById("link"+networks[nIter]).style.backgroundColor="#f6f6f6";
+  }
+}
 
 function createInputForAp(ap) {
   if (ap.essid=="" && ap.rssi==0) return;
@@ -25,38 +32,16 @@ function createInputForAp(ap) {
   if (ap.enc=="0") encVal="0"; //open
   if (ap.enc=="1") encVal="-32"; //wep
 
-  /*var div=document.createElement("div");
-  div.id="apdiv";
-  var rssi=document.createElement("div");
-  var rssiVal=-Math.floor(ap.rssi/51)*32;
-  rssi.className="icon";
-  rssi.style.backgroundPosition="0px "+rssiVal+"px";
-  var encrypt=document.createElement("div");
-  encrypt.className="icon";
-  encrypt.style.backgroundPosition="-32px "+encVal+"px";
-  var input=document.createElement("input");
-  input.type="radio";
-  input.name="essid";
-  input.value=ap.essid;
-  if (currAp==ap.essid) input.checked="1";
-  input.id="opt-"+ap.essid;
-  var label=document.createElement("label");
-  label.htmlFor="opt-"+ap.essid;
-  label.textContent=ap.essid;
-  div.appendChild(input);
-  div.appendChild(rssi);
-  div.appendChild(encrypt);
-  div.appendChild(label);
-  return div;*/
-
-  /*<li><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">List Item</a></li>*/
-
   var element=document.createElement("li");
   var link=document.createElement("a");
   link.className="ui-btn ui-btn-icon-right ui-icon-carat-r";
+  var linkName = "link"+ap.essid;
+  link.id=linkName;
   link.textContent=ap.essid;
   link.onclick = function () {
+    clearSelectedItem();
     document.getElementById("essid").value = ap.essid;
+    document.getElementById(linkName).style.backgroundColor="#ededed";
   };
   element.appendChild(link);
   return element;
@@ -70,7 +55,6 @@ function getSelectedEssid() {
   return currAp;
 }
 
-
 function scanAPs() {
   xhr.open("GET", "wifiscan.cgi");
   xhr.onreadystatechange=function() {
@@ -81,7 +65,10 @@ function scanAPs() {
         $("#aps").innerHTML="";
         $("#aps").appendChild(createDivider());
         for (var i=0; i<data.result.APs.length; i++) {
-          if (data.result.APs[i].essid=="" && data.result.APs[i].rssi==0) continue;
+          if (data.result.APs[i].essid=="" && data.result.APs[i].rssi==0) {
+            continue;
+          }
+          networks.push(data.result.APs[i].essid);
           $("#aps").appendChild(createInputForAp(data.result.APs[i]));
         }
         window.setTimeout(scanAPs, 20000);
