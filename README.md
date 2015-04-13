@@ -22,6 +22,12 @@ To build the firmware execute:
 make
 ```
 
+Please note that you will need to remove the include of stdint.h from lib/heatshrink/heatshrink_decoder.h if you get the following or similar error:
+```
+/opt/Espressif/ESP8266_SDK/include/stdint.h:83:5: warning: "TENSILICA" is not defined [-Wundef]
+```
+
+
 Flash the code happens in 2 steps. On the first step flash the firmware:
 ```
 make flash
