@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="jquery.mobile-1.4.5.min.css">
 <link rel="stylesheet" href="style.css">
 <script type="text/javascript" src="140medley.min.js"></script>
+<script type="text/javascript" src="common.js"></script>
 <script type="text/javascript">
 
 var xhr=j();
@@ -105,6 +106,19 @@ window.onload=function(e) {
 		<label for="basic">WiFi password, if applicable: </label>
 		<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
     <input type="password" name="passwd" val="%WiFiPasswd%"></div>
+
+    <div data-role="collapsible" onclick="collapse('advanced', 'advancedIcon');" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" class="ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed">
+      <h4 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
+        <a href="#" id="advancedIcon" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-left ui-btn-inherit ui-icon-carat-d">Advanced</a></h4>
+        <div id="advanced" class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed">
+
+          <label for="basic">Server: </label>
+          <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+          <input type="text" name="passwd" val=""></div>
+
+        </div>
+    </div>
+
 
     <div class="ui-input-btn ui-btn ui-corner-all ui-shadow">Connect
       <input type="submit" name="connect" value="Connect" />
