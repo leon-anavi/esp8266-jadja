@@ -181,6 +181,8 @@ static void ICACHE_FLASH_ATTR reassTimerCb(void *arg) {
 int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 	char essid[128];
 	char passwd[128];
+	char host[64];
+	char port[64];
 	static ETSTimer reassTimer;
 
 	if (connData->conn==NULL) {
@@ -190,13 +192,16 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 
 	httpdFindArg(connData->post->buff, "essid", essid, sizeof(essid));
 	httpdFindArg(connData->post->buff, "passwd", passwd, sizeof(passwd));
+	httpdFindArg(connData->post->buff, "host", host, sizeof(host));
+	httpdFindArg(connData->post->buff, "port", port, sizeof(port));
 
 	os_strncpy((char*)stconf.ssid, essid, 32);
 	os_strncpy((char*)stconf.password, passwd, 64);
 	os_printf("Try to connect to AP %s pw %s\n", essid, passwd);
 
 	//Save configuration to the memory
-	CFG_Update(essid, passwd);
+	uint32_t nPort = atoi(port);
+	CFG_Update(essid, passwd, host, nPort);
 
 	//Schedule disconnect/connect
 	os_timer_disarm(&reassTimer);

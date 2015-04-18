@@ -114,7 +114,11 @@ window.onload=function(e) {
 
           <label for="basic">Server: </label>
           <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
-          <input type="text" name="passwd" val=""></div>
+          <input type="text" name="host" value="iot.anavi.org"></div>
+
+          <label for="basic">Port: </label>
+          <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+          <input type="text" name="port" value="1883"></div>
 
         </div>
     </div>

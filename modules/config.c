@@ -109,11 +109,14 @@ CFG_Load()
 
 }
 
-void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128])
+void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128],
+																	char host[64], uint32_t port)
 {
 	//Save configuration to the memory
 	saveFlag.flag  = 1;
 	os_sprintf((char *)sysCfg.sta_ssid, "%s", essid);
 	os_sprintf((char *)sysCfg.sta_pwd, "%s", passwd);
+	os_sprintf((char *)sysCfg.mqtt_host, "%s", host);
+	sysCfg.mqtt_port = port;
 	CFG_Save();
 }
