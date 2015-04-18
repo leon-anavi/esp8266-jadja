@@ -290,6 +290,7 @@ void user_init(void) {
 	else {
 		os_printf("\r\nMQTT ...\r\n");
 
+		os_printf("\nMQTT host: %s\n", sysCfg.mqtt_host);
 		MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);
 		os_printf("\r\nInit ...\r\n");
 
