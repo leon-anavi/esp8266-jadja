@@ -1,10 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html class="ui-mobile">
 <head>
   <title>JADJA - Connecting...</title>
   <meta HTTP-EQUIV="REFRESH" content="30; url=http://www.linux.com/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="jquery.mobile-1.4.5.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript">
+
+function collapse() {
+  var classes = document.getElementById("detailsInfo").className;
+  var collapseClass = "ui-collapsible-content-collapsed";
+  if (-1 === classes.indexOf(collapseClass)) {
+    document.getElementById("detailsInfo").className += " "+collapseClass;
+    switchIcon(true);
+  }
+  else {
+    document.getElementById("detailsInfo").className = classes.replace(collapseClass, "");
+    switchIcon(false);
+  }
+}
+
+function switchIcon(showIconDown) {
+  var classes = document.getElementById("detailsHeading").className;
+  if (true == showIconDown) {
+    classes = classes.replace("ui-icon-carat-u", "ui-icon-carat-d");
+  }
+  else {
+    classes = classes.replace("ui-icon-carat-d", "ui-icon-carat-u");
+  }
+  document.getElementById("detailsHeading").className = classes;
+}
+
+  </script>
 </head>
-<body>
-The device will connect to the configured WiFi network. Please wait...
+<body class="ui-mobile-viewport ui-overlay-a">
+  <div class="ui-page ui-page-theme-a ui-page-active" style="min-height: 459px;">
+    <div role="banner" class="ui-header ui-bar-inherit">
+      <h1 class="ui-title" role="heading" aria-level="1">JADJA</h1>
+    </div>
+
+    <div class="connecting">
+      <button class="ui-btn ui-icon-info ui-btn-icon-left ui-shadow ui-corner-all">Connecting... Please wait...</button>
+    </div>
+
+    <div data-role="collapsible" onclick="collapse();" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" class="ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed connecting">
+      <h4 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
+        <a href="#" id="detailsHeading" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-left ui-btn-inherit ui-icon-carat-d">Details</a></h4>
+        <div id="detailsInfo" class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed">
+      <p>ESP8266 is trying to connect to you WiFi router and through it to a server with MQTT broker. If a connection is established successfully there will be a steady green light. The open WiFi network created by ESP8266 will disappear and your device will automatically try to connect to another known WiFi network. In 30 seconds you will be redirected to <a href="http://www.linux.com/" class="ui-link">linux.com</a>. </p>
+        </div>
+    </div>
+
+  </div>
 </body>
 </html>
