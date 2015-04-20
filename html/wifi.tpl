@@ -107,6 +107,14 @@ window.onload=function(e) {
 		<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
     <input type="password" name="passwd" val="%WiFiPasswd%"></div>
 
+    <label for="basic">MQTT username: </label>
+    <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+    <input type="password" name="mqttuser" value=""></div>
+
+    <label for="basic">MQTT password: </label>
+    <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+    <input type="password" name="mqttpass" value=""></div>
+
     <div data-role="collapsible" onclick="collapse('advanced', 'advancedIcon');" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" class="ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed">
       <h4 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
         <a href="#" id="advancedIcon" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-left ui-btn-inherit ui-icon-carat-d">Advanced</a></h4>
