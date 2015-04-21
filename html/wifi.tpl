@@ -105,15 +105,18 @@ window.onload=function(e) {
     <input type="hidden" id="essid" name="essid" value="" />
 		<label for="basic">WiFi password, if applicable: </label>
 		<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
-    <input type="password" name="passwd" val="%WiFiPasswd%"></div>
+      <input type="password" name="passwd" val="%WiFiPasswd%">
+    </div>
 
     <label for="basic">MQTT username: </label>
     <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
-    <input type="password" name="mqttuser" value=""></div>
+      <input type="text" name="mqttuser" value="" placeholder="demo" maxlength="100">
+    </div>
 
     <label for="basic">MQTT password: </label>
     <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
-    <input type="password" name="mqttpass" value=""></div>
+      <input type="password" name="mqttpass" value="" maxlength="100">
+    </div>
 
     <div data-role="collapsible" onclick="collapse('advanced', 'advancedIcon');" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" class="ui-collapsible ui-collapsible-inset ui-corner-all ui-collapsible-themed-content ui-collapsible-collapsed">
       <h4 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
