@@ -201,7 +201,7 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 
 	//Save configuration to the memory
 	uint32_t nPort = atoi(port);
-	CFG_Update(essid, passwd, host, nPort);
+	CFG_Update(essid, passwd, host, nPort, "", "");
 
 	//Schedule disconnect/connect
 	os_timer_disarm(&reassTimer);
