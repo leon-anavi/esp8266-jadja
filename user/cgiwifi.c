@@ -183,6 +183,8 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 	char passwd[128];
 	char host[64];
 	char port[64];
+	char mqtt_user[32];
+	char mqtt_pass[32];
 	static ETSTimer reassTimer;
 
 	if (connData->conn==NULL) {
@@ -194,6 +196,9 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 	httpdFindArg(connData->post->buff, "passwd", passwd, sizeof(passwd));
 	httpdFindArg(connData->post->buff, "host", host, sizeof(host));
 	httpdFindArg(connData->post->buff, "port", port, sizeof(port));
+	httpdFindArg(connData->post->buff, "port", port, sizeof(port));
+	httpdFindArg(connData->post->buff, "mqttuser", mqtt_user, sizeof(mqtt_user));
+	httpdFindArg(connData->post->buff, "mqttpass", mqtt_pass, sizeof(mqtt_pass));
 
 	os_strncpy((char*)stconf.ssid, essid, 32);
 	os_strncpy((char*)stconf.password, passwd, 64);
@@ -201,7 +206,7 @@ int ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 
 	//Save configuration to the memory
 	uint32_t nPort = atoi(port);
-	CFG_Update(essid, passwd, host, nPort, "", "");
+	CFG_Update(essid, passwd, host, nPort, mqtt_user, mqtt_pass);
 
 	//Schedule disconnect/connect
 	os_timer_disarm(&reassTimer);
