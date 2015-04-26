@@ -69,6 +69,14 @@ void mqttConnectedCb(uint32_t *args)
 
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Connected\r\n");
+
+	//TODO: add unique name as prefx
+	//subscribe for commands
+	if (FALSE == MQTT_Subscribe(client, "/command", 0))
+	{
+		INFO("MQTT: Unable to subscribe to /command\r\n");
+	}
+
 	if (FALSE == MQTT_Subscribe(client, "/settings/temperature", 0))
 	{
 		INFO("MQTT: Unable to subscribe to /settings/temperature\r\n");
