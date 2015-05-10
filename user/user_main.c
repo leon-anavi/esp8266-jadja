@@ -53,6 +53,7 @@ int atoi(const char *s);
 bool parse(char *json);
 
 void publishData(MQTT_Client* client);
+void publishPowerStatus(MQTT_Client* client);
 
 void wifiConnectCb(uint8_t status)
 {
@@ -121,6 +122,19 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 	{
 		publishData(client);
 	}
+	else if (0 == strcmp(topicBuf, "/poweron"))
+	{
+		//TODO: turn on
+	}
+	else if (0 == strcmp(topicBuf, "/poweroff"))
+	{
+		//TODO: turn off
+	}
+	else if (0 == strcmp(topicBuf, "/power"))
+	{
+		//TODO: report power status (on or off)
+		publishPowerStatus(client);
+	}
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
 	os_free(topicBuf);
@@ -138,6 +152,12 @@ void publishData(MQTT_Client* client)
 	MQTT_Publish(client, "/sensors/temperature", str, strlen(str), 0, 1);
 }
 
+void publishPowerStatus(MQTT_Client* client)
+{
+	char str[255];
+	ets_strcpy(str, "{ \"power\": \"on\" }");
+	MQTT_Publish(client, "/power", str, strlen(str), 0, 1);
+}
 
 char* itoa(int value, char* result, int base) {
 	// check that the base if valid
