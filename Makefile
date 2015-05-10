@@ -138,6 +138,9 @@ $(BUILD_DIR):
 firmware:
 	$(Q) mkdir -p $@
 
+install: $(FW_FILE_1) $(FW_FILE_2)
+	$(Q) $(ESPFLASH) --port $(ESPPORT) write_flash 0x00000 $(FW_FILE_1) 0x40000 $(FW_FILE_2)	
+
 flash: $(FW_FILE_1) $(FW_FILE_2)
 	$(Q) $(ESPFLASH) --port $(ESPPORT) write_flash 0x00000 $(FW_FILE_1) 0x40000 $(FW_FILE_2)
 
