@@ -6,7 +6,11 @@ This is a smart MQTT client for ESP8266 with the following features:
    configures the credentials for his home Wifi network. After that ESP8266 restarts and works as MQTT client,
  - On each next boot ESP8266 tried to connect to the home WiFi network with the configured credentials and 
    to MQTT brokwer through the Internet connection,
- - The user can reset the configations at any time by holding GPIO0 to low for 5 seconds.
+ - Configations can be reset at any time by holding GPIO0 to low for 5 seconds.
+
+Getting Ready
+------
+Please follow the step by step procedure to install Espressif SDK and required tools for building and flashing the firmware on your personal computer: https://github.com/esp8266/esp8266-wiki/wiki/Toolchain
 
 Source Code
 ------
