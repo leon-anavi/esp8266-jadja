@@ -3,6 +3,8 @@
 
 bool connected_mqtt_cloud;
 
+int blink_counter_lamp;
+
 void ICACHE_FLASH_ATTR ioLed(int ena);
 void ioInit(void);
 void blink(void *arg);

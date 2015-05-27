@@ -72,11 +72,29 @@ void blink(void *arg)
 			blink_counter = 1;
 		}
 	}
+
+	if (0 == blink_counter_lamp)
+	{
+		//Set GPIO5 to LOW
+		gpio_output_set(0, BIT5, BIT5, 0);
+	}
+	else
+	{
+		//Decrease counter
+		if (0 < blink_counter_lamp) {
+			blink_counter_lamp -= 1;
+		}
+		//Set GPIO5 to HIGH
+		gpio_output_set(BIT5, 0, BIT5, 0);
+	}
 }
 
 void ioInit() {
 	//Set GPIO4 to output mode
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO4_U, FUNC_GPIO4);
+
+	//Set GPIO5 to output mode
+  PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO5_U, FUNC_GPIO5);
 
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_GPIO2);
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO0_U, FUNC_GPIO0);

@@ -135,6 +135,14 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 		//TODO: report power status (on or off)
 		publishPowerStatus(client);
 	}
+	else if (0 == strcmp(topicBuf, "/command"))
+	{
+		if (0 == strcmp(dataBuf, "blink"))
+		{
+			blink_counter_lamp += 3;
+			INFO("Blink counter = %d \n", blink_counter_lamp);
+		}
+	}
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
 	os_free(topicBuf);
@@ -291,7 +299,9 @@ HttpdBuiltInUrl builtInUrls[]={
 
 //Main routine. Initialize stdout, the I/O and the webserver and we're done.
 void user_init(void) {
+	//Initialize default values
 	connected_mqtt_cloud = false;
+	blink_counter_lamp = 0;
 
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	os_delay_us(1000000);
