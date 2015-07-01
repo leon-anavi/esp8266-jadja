@@ -10,6 +10,7 @@
 <script type="text/javascript">
 
 var xhr=j();
+
 var currAp="%currSsid%";
 
 var networks=[];
@@ -59,6 +60,37 @@ function getSelectedEssid() {
   return currAp;
 }
 
+function swapFields(fieldOne, fieldTwo) {
+    document.getElementById(fieldOne).style.display = 'block';
+    document.getElementById(fieldTwo).style.display = 'none';
+}
+
+function changePasswordVisibility() {
+  var labelClasses = document.getElementById('labelShowPassword').className;
+  var positionOn = labelClasses.indexOf('ui-checkbox-on');
+  var newClasses = '';
+  if (-1 !== positionOn) {
+    newClasses = labelClasses.replace('ui-checkbox-on', 'ui-checkbox-off');
+    swapFields('inputPasswordHide', 'inputPasswordShow');
+  }
+  else {
+    newClasses = labelClasses.replace('ui-checkbox-off', 'ui-checkbox-on');
+    swapFields('inputPasswordShow', 'inputPasswordHide');
+  }
+  document.getElementById('labelShowPassword').className = newClasses;
+}
+
+function updatePassword(field) {
+  var newPassword = document.getElementById(field).value;
+  if ('inputPasswordSecret' === field) {
+    document.getElementById('inputPasswordPlain').value = newPassword;
+  }
+  else {
+    document.getElementById('inputPasswordSecret').value = newPassword;
+  }
+  document.getElementById('passwd').value = newPassword;
+}
+
 function scanAPs() {
   xhr.open("GET", "wifiscan.cgi");
   xhr.onreadystatechange=function() {
@@ -103,9 +135,19 @@ window.onload=function(e) {
 	<div class="inputSection">
     <form name="wifiform" action="connect.cgi" method="post">
     <input type="hidden" id="essid" name="essid" value="" />
+    <input type="hidden" name="passwd" id="passwd" val="%WiFiPasswd%">
 		<label for="basic">WiFi password, if applicable: </label>
-		<div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
-      <input type="password" name="passwd" val="%WiFiPasswd%">
+		<div id="inputPasswordHide" class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+      <input type="password" name="inputPasswordSecret" id="inputPasswordSecret" val="%WiFiPasswd%" onchange="updatePassword('inputPasswordSecret');">
+    </div>
+
+    <div id="inputPasswordShow" style="display: none" class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+      <input type="text" name="inputPasswordPlain" id="inputPasswordPlain" val="%WiFiPasswd%" onchange="updatePassword('inputPasswordPlain');">
+    </div>
+
+    <div class="ui-checkbox">
+      <label id="labelShowPassword" for="showPassword" class="ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off" onclick="changePasswordVisibility();">Show password</label>
+      <input type="checkbox" name="showPassword" id="showPassword">
     </div>
 
     <label for="basic">MQTT username: </label>
