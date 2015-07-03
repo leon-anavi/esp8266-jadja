@@ -54,6 +54,7 @@ bool parse(char *json);
 
 void publishData(MQTT_Client* client);
 void publishPowerStatus(MQTT_Client* client);
+void publishAcknowledge(MQTT_Client* client, const char* topic);
 
 void wifiConnectCb(uint8_t status)
 {
@@ -76,6 +77,12 @@ void mqttConnectedCb(uint32_t *args)
 	if (FALSE == MQTT_Subscribe(client, "/command", 0))
 	{
 		INFO("MQTT: Unable to subscribe to /command\r\n");
+	}
+
+	//subscribe for door
+	if (FALSE == MQTT_Subscribe(client, "/door", 0))
+	{
+		INFO("MQTT: Unable to subscribe to /door\r\n");
 	}
 
 	if (FALSE == MQTT_Subscribe(client, "/settings/temperature", 0))
@@ -143,6 +150,18 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 			INFO("Blink counter = %d \n", blink_counter_lamp);
 		}
 	}
+	else if ( (0 == strcmp(topicBuf, "/door") ) &&
+						(0 == strcmp(dataBuf, "open")) )
+	{
+		//turn on GPIO5
+		gpio_output_set(BIT5, 0, BIT5, 0);
+		//sleep for 2000 ms, aka 2 sec
+		os_delay_us(2000*1000);
+		//turn off GPIO5
+		gpio_output_set(0, BIT5, BIT5, 0);
+		//send reply through MQTT
+		publishAcknowledge(client, "/door");
+	}
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
 	os_free(topicBuf);
@@ -165,6 +184,13 @@ void publishPowerStatus(MQTT_Client* client)
 	char str[255];
 	ets_strcpy(str, "{ \"power\": \"on\" }");
 	MQTT_Publish(client, "/power", str, strlen(str), 0, 1);
+}
+
+void publishAcknowledge(MQTT_Client* client, const char* topic)
+{
+	char str[255];
+	ets_strcpy(str, "{ \"status\": \"ok\" }");
+	MQTT_Publish(client, topic, str, strlen(str), 0, 1);
 }
 
 char* itoa(int value, char* result, int base) {
