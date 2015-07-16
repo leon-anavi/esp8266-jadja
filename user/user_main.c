@@ -79,10 +79,11 @@ void mqttConnectedCb(uint32_t *args)
 		INFO("MQTT: Unable to subscribe to /command\r\n");
 	}
 
-	//subscribe for door
-	if (FALSE == MQTT_Subscribe(client, "/door", 0))
+	//subscribe for configured topic (for example /door)
+	char *configuredTopic = (char *)sysCfg.mqtt_topic;
+	if (FALSE == MQTT_Subscribe(client, configuredTopic, 0))
 	{
-		INFO("MQTT: Unable to subscribe to /door\r\n");
+		INFO("MQTT: Unable to subscribe to %s\r\n", configuredTopic);
 	}
 
 	if (FALSE == MQTT_Subscribe(client, "/settings/temperature", 0))
@@ -118,6 +119,9 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 	os_memcpy(dataBuf, data, data_len);
 	dataBuf[data_len] = 0;
 
+	//Typecast the configured MQTT topic
+	char *configuredTopic = (char *)sysCfg.mqtt_topic;
+
 	if (0 == strcmp(topicBuf, "/settings/temperature"))
 	{
 		if (false == parse(dataBuf))
@@ -150,7 +154,7 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 			INFO("Blink counter = %d \n", blink_counter_lamp);
 		}
 	}
-	else if ( (0 == strcmp(topicBuf, "/door") ) &&
+	else if ( (0 == strcmp(topicBuf, configuredTopic) ) &&
 						(0 == strcmp(dataBuf, "open")) )
 	{
 		//turn on GPIO5
@@ -160,7 +164,7 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 		//turn off GPIO5
 		gpio_output_set(0, BIT5, BIT5, 0);
 		//send reply through MQTT
-		publishAcknowledgement(client, "/door");
+		publishAcknowledgement(client, configuredTopic);
 	}
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
