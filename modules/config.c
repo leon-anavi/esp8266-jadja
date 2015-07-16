@@ -111,7 +111,7 @@ CFG_Load()
 
 void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128],
 																	char host[64], uint32_t port,
-																	char mqtt_user[32], char mqtt_pass[32])
+																	char mqtt_user[32], char mqtt_pass[32], char mqtt_topic[32])
 {
 	//Save configuration to the memory
 	saveFlag.flag  = 1;
@@ -124,6 +124,9 @@ void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128],
 	//save MQTT user & password
 	os_sprintf((char *)sysCfg.mqtt_user, "%s", mqtt_user);
 	os_sprintf((char *)sysCfg.mqtt_pass, "%s", mqtt_pass);
+
+	//Save MQTT topic
+	os_sprintf((char *)sysCfg.mqtt_topic, "%s", mqtt_topic);
 
 	CFG_Save();
 }

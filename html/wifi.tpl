@@ -173,6 +173,10 @@ window.onload=function(e) {
           <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
           <input type="text" name="port" value="1883"></div>
 
+          <label for="basic">Topic: </label>
+          <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset">
+          <input type="text" name="topic" value="&#47;door" maxlength="32"></div>
+
         </div>
     </div>
 

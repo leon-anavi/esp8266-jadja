@@ -54,7 +54,7 @@ bool parse(char *json);
 
 void publishData(MQTT_Client* client);
 void publishPowerStatus(MQTT_Client* client);
-void publishAcknowledge(MQTT_Client* client, const char* topic);
+void publishAcknowledgement(MQTT_Client* client, const char* topic);
 
 void wifiConnectCb(uint8_t status)
 {
@@ -160,7 +160,7 @@ void mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const cha
 		//turn off GPIO5
 		gpio_output_set(0, BIT5, BIT5, 0);
 		//send reply through MQTT
-		publishAcknowledge(client, "/door");
+		publishAcknowledgement(client, "/door");
 	}
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
@@ -186,7 +186,7 @@ void publishPowerStatus(MQTT_Client* client)
 	MQTT_Publish(client, "/power", str, strlen(str), 0, 1);
 }
 
-void publishAcknowledge(MQTT_Client* client, const char* topic)
+void publishAcknowledgement(MQTT_Client* client, const char* topic)
 {
 	char str[255];
 	ets_strcpy(str, "{ \"status\": \"ok\" }");

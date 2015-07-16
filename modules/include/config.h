@@ -44,6 +44,7 @@ typedef struct{
 	uint32_t mqtt_port;
 	uint8_t mqtt_user[32];
 	uint8_t mqtt_pass[32];
+        uint8_t mqtt_topic[32];
 	uint32_t mqtt_keepalive;
 	uint8_t security;
 } SYSCFG;
@@ -57,7 +58,7 @@ void ICACHE_FLASH_ATTR CFG_Save();
 void ICACHE_FLASH_ATTR CFG_Load();
 void ICACHE_FLASH_ATTR CFG_Update(char essid[128], char passwd[128],
 																	char host[64], uint32_t port,
-																	char mqtt_user[32], char mqtt_pass[32]);
+																	char mqtt_user[32], char mqtt_pass[32], char mqtt_topic[32]);
 
 extern SYSCFG sysCfg;
 extern SAVE_FLAG saveFlag;

@@ -43,7 +43,7 @@ static void ICACHE_FLASH_ATTR resetBtnTimerCb(void *arg) {
 	} else {
 		if (resetCnt>=6) { //3 sec pressed
 			//reset WiFi configurations
-			CFG_Update("", "", "", 1883, "", "");
+			CFG_Update("", "", "", 1883, "", "", "");
 
 			wifi_station_disconnect();
 			wifi_set_opmode(0x3); //reset to AP+STA mode
