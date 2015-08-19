@@ -190,7 +190,7 @@ void publishAcknowledge(MQTT_Client* client, const char* topic)
 {
 	char str[255];
 	ets_strcpy(str, "{ \"status\": \"ok\" }");
-	MQTT_Publish(client, topic, str, strlen(str), 0, 1);
+	MQTT_Publish(client, topic, str, strlen(str), 0, 0);
 }
 
 char* itoa(int value, char* result, int base) {
